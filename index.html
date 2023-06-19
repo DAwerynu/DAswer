@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Игра с двумя кубиками</title>
+    <style>
+      
+      #red-cube {
+        background-color: red;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        left: 200px;
+        top: 200px;
+      }
+      #rectangle {
+        background-color: gray;
+        width: 200px;
+        height: 100px;
+        position: absolute;
+        left: 100px;
+        top: 150px;
+      }
+      #message {
+        font-size: 24px;
+        color: green;
+        display: none;
+      }
+    </style>
+    <script>
+      var blue = document.getElementById("blue-cube");
+      var red = document.getElementById("red-cube");
+      var rect = document.getElementById("rectangle");
+      var message = document.getElementById("message");
+
+      function moveBlue(event) {
+        var x = event.clientX;
+        var y = event.clientY;
+        blue.style.left = x + "px";
+        blue.style.top = y + "px";
+        checkCollision();
+      }
+
+      function moveRed() {
+        var bx = parseInt(blue.style.left);
+        var by = parseInt(blue.style.top);
+        var rx = parseInt(red.style.left);
+        var ry = parseInt(red.style.top);
+        if (bx < rx) {
+          red.style.left = (rx - 1) + "px";
+        } else if (bx > rx) {
+          red.style.left = (rx + 1) + "px";
+        }
+        if (by < ry) {
+          red.style.top = (ry - 1) + "px";
+        } else if (by > ry) {
+          red.style.top = (ry + 1) + "px";
+        }
+        checkCollision();  
+      }
+
+      function checkCollision() {
+        var bx = parseInt(blue.style.left);
+        var by = parseInt(blue.style.top);
+        var rx = parseInt(red.style.left);
+        var ry = parseInt(red.style.top);
+        if (bx + 50 > rx && bx < rx + 50 && by + 50 > ry && by < ry + 50) {
+          endGame();
+        }
+        if (bx + 50 > rect.offsetLeft && bx < rect.offsetLeft + 200 && by + 50 > rect.offsetTop && by < rect.offsetTop + 100) {
+          blue.style.left = bx + "px";
+          blue.style.top = by + "px";
+        }
+        if (rx + 50 > rect.offsetLeft && rx < rect.offsetLeft + 200 && ry + 50 > rect.offsetTop && ry < rect.offsetTop + 100) {
+          red.style.left = rx + "px";
+          red.style.top = ry + "px";
+        }
+      }
+
+      function endGame() {
+        message.style.display = "block";
+      }
+
+      setInterval(moveRed, 10);
+    </script>
+  </head>
+  <body>
+    <div id="blue-cube"></div>
+    <div id="red-cube"></div>
+    <div id="rectangle"></div>
+    <div id="message">Игра окончена</div>
+  </body>
+</html>
